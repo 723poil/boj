@@ -1,5 +1,4 @@
 import sys
-from collections import defaultdict
 
 input = sys.stdin.readline
 
@@ -12,43 +11,30 @@ def solution():
         N = int(input())
         ranks = list(map(int, input().split()))
         
-        team = dict()
+        teams_count = [0] * 201
         
-        checked = defaultdict(int)
+        teams_sum = {}
+        score = 1
         
-        rank = 0
-        while len(ranks) > 0:
-            cur_team = ranks.pop(0)
+        for team in ranks:
+            teams_count[team] += 1
+        
+        for team in ranks:
             
-            if checked[cur_team] == 0:
-                checked[cur_team] = ranks.count(cur_team) + 1
-                
-            if checked[cur_team] == 6:
-                rank += 1
-                
-                if team.get(cur_team) is None:
-                    team[cur_team] = [[rank, 10000], rank]
-                elif len(team[cur_team]) < 5:
-                    team[cur_team].append(rank)
-                    team[cur_team][0][0] += rank
-                    
-                elif len(team[cur_team]) == 5:
-                    team[cur_team].append(rank)
-                    team[cur_team][0][1] = rank
-                    
-        cur_rank = 10 ** 6
-        cur_team = 0
-        cur_last = 10 ** 6
-        
-        for key in team:
-            sum_rank, last_team = team[key][0]
+            if teams_count[team] >= 6:
+                if teams_count[team] == 6:
+                    teams_sum[team] = [score, 0]
+                elif teams_count[team] < 10:
+                    teams_sum[team][0] += score
+                elif teams_count[team] == 10:
+                    teams_sum[team][1] = score
             
-            if cur_rank > sum_rank or (cur_rank == sum_rank and cur_last > last_team):
-                cur_rank = sum_rank
-                cur_team = key
-                cur_last = last_team
+                score += 1
+                teams_count[team] += 1
+            
+        rst = sorted(teams_sum.items(), key= lambda x: (x[1][0], x[1][1]))
                 
-        result.append(cur_team)
+        result.append(rst[0][0])
             
     return result
     
