@@ -1,24 +1,22 @@
 import sys
-from collections import defaultdict
+from collections import Counter
 
 input = sys.stdin.readline
 
 def solution():
     N, M = map(int, input().split())
     
-    dt = defaultdict(int)
+    words = [input().rstrip() for _ in range(N)]
     
-    for _ in range(N):
-        tmp = str(input().rstrip())
-        
-        if len(tmp) < M:
-            continue
-        
-        dt[tmp] += 1
-        
-    return sorted(list(dt.items()), key= lambda x: (-x[1], -len(x[0]), x[0]))
+    counter = Counter(word for word in words if len(word) >= M)
+    
+    result = list(counter)
+    result.sort()
+    result.sort(key=len, reverse=True)
+    result.sort(key=counter.get, reverse=True)
+    
+    return result
     
 result = solution()
-    
-for rst in result:
-    print(rst[0])
+
+print("\n".join(result))
