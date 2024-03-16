@@ -42,16 +42,13 @@ def solution():
     find_num = int(input())
     
     snail = [[0 for _ in range(N+1)] for _ in range(N+1)]
-    
     center = N // 2 + 1
     
-    
     snail[center][center] = 1
-    cur_layer = 1
     pos = [center, center]
+    cur_layer = 1
     
     result_pos = [0, 0]
-    
     if find_num == 1:
         result_pos = [center, center]
     
@@ -70,5 +67,4 @@ snail, pos = solution()
 
 for i in range(1, len(snail)):
     print(" ".join(map(str, snail[i][1:])))
-    
 print(" ".join(map(str, pos)))
