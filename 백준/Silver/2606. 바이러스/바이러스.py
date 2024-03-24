@@ -1,56 +1,49 @@
-import sys
+from sys import stdin
 
-input = sys.stdin.readline
+input = stdin.readline
 
-class Node:
-    def __init__(self, data):
-        self.ver = data
-        self.link = None
+def count_worm(graph: dict, searched: list):
+    wc = 0
+    
+    qq = [1]
+    searched[0] = True
+    
+    while qq:
+        node = qq.pop(0)
+        wc += 1
+        
+        nl = graph[node]
+        
+        for n in nl:
+            if not searched[n-1]:
+                qq.append(n)
+                searched[n-1] = True
+                
+    return wc - 1
 
-class graph:
-    def __init__(self, data):
-        self.pointer = Node(data)
-
-    def qinsert(self, data):
-        cur = self.pointer
-
-        while cur.link:
-            cur = cur.link
-        cur.link = Node(data)
-
-    def qpop(self):
-        temp = self.pointer
-        self.pointer = temp.link
-        return temp.ver
-
-N= int(input())
-M= int(input())
-
-computer = [graph(i) for i in range(N+1)]
-
-for i in range(M):
-    a,b = map(int, input().split())
-
-    computer[a].qinsert(b)
-    computer[b].qinsert(a)
-
-for i in range(N+1):
-    computer[i].qpop()
-
-count = 0
-found = [0]*(N+1)
-def DFS(start):
-    global count, computer, found
-    found[start] = 1
-    w = computer[start].pointer
-
-    while w:
-        if found[w.ver] == 0:
-            found[w.ver] = 1
-            count += 1
-            DFS(w.ver)
-        w = w.link
-
-DFS(1)
-
-print(count)
+def solution():
+    cn = int(input())
+    cr = int(input())
+    
+    if cn == 1:
+        return 0
+    
+    graph = dict()
+    searched = [False for _ in range(cn)]
+    
+    for _ in range(cr):
+        c1, c2 = map(int, input().split())
+        
+        if graph.get(c1):
+            graph[c1].append(c2)
+        else:
+            graph[c1] = [c2]
+            
+        if graph.get(c2):
+            graph[c2].append(c1)
+        else:
+            graph[c2] = [c1]
+            
+    return count_worm(graph, searched)
+    
+print(solution())
