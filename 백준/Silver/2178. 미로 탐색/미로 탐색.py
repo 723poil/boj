@@ -1,40 +1,41 @@
-import sys
+from sys import stdin
 
-input = sys.stdin.readline
+input = stdin.readline
 
-N,M = map(int, input().split())
-
-miro = []
-
-for _ in range(N):
-    miro.append(str(input()))
-
-visited = [[False] * M for _ in range(N)]
-
-dx = [1, 0, -1, 0]
-dy = [0, 1, 0, -1]
-
-def BFS(starty, startx):
-    global dx, dy, miro, visited
-
-    queue = []
-    visited[starty][startx] = True
-
-    queue.append([starty, startx, 1])
-
-    while queue:
-        y, x, count = queue.pop(0)
-
+def find_finish(miro: list, pos: tuple):
+    x = [0, 1, 0, -1]
+    y = [1, 0, -1, 0]
+    
+    n, m = [pos[0]-1, pos[1]-1]
+    
+    qq = [((0, 0), 1)]
+    miro[0][0] = 0
+    
+    while qq:
+        cp, cc,  = qq.pop(0)
+        
+        if cp[0] == n and cp[1] == m:
+            return cc
+        
         for i in range(4):
-            sy = y + dy[i]
-            sx = x + dx[i]
+            cur_x = cp[1] + x[i]
+            cur_y = cp[0] + y[i]
+            
+            if 0 <= cur_x <= m and 0 <= cur_y <= n and miro[cur_y][cur_x] == 1:
+                qq.append(((cur_y, cur_x), cc+1))
+                miro[cur_y][cur_x] = 0
 
-            if 0 <= sy < N and 0 <= sx < M and miro[sy][sx] == '1' and visited[sy][sx] == False:
-                if sy == N-1 and sx == M-1:
-                    print(count+1)
-                    return
-                
-                visited[sy][sx] = True
-                queue.append([sy,sx, count+1])
+def solution():
+    N, M = map(int, input().split())
+    
+    miro = []
+    
+    for _ in range(N):
+        row = list(map(int, list(str(input().strip()))))
+        
+        miro.append(row)
+        
+    return find_finish(miro, (N, M))
+        
 
-BFS(0,0)
+print(solution())
