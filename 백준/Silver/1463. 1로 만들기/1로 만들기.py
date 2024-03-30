@@ -1,24 +1,32 @@
-def dp(solve):
-    global count
-    count += 1
-    Nsolve = []
-    for a in solve:
-        Nsolve.append(a-1)
-        if a%3== 0 and a >= 3:
-            Nsolve.append(a/3)
-        if a%2== 0 and a >=2:
-            Nsolve.append(a/2)
+from sys import stdin
+
+input = stdin.readline
+
+def act_dp(dp: list):
+    new_dp = []
     
-    return Nsolve
+    for d in dp:
+        new_dp.append(d - 1)
+        if d % 3 == 0 and d >= 3:
+            new_dp.append(d // 3)
+        if d % 2 == 0 and d >= 2:
+            new_dp.append(d // 2)
+            
+    return new_dp
 
-if __name__ == '__main__':
+def solution():
     N = int(input())
-    solve = [N]
     count = 0
+    
     if N == 1:
-        print(count)
-    else:
-        while min(solve) != 1:
-            solve = dp(solve)
+        return count
+    
+    dp = [N]
 
-        print(count)
+    while min(dp) != 1:
+        dp = act_dp(dp)
+        count += 1
+        
+    return count
+
+print(solution())
