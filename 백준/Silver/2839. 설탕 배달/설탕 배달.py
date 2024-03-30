@@ -1,25 +1,23 @@
-import sys
+from sys import stdin
 
-N = int(sys.stdin.readline())
+input = stdin.readline
 
-if N < 5:
-    if N % 3 == 0:
-        print(1)
-    else:
-        print(-1)
-else :
+def solution():
+    N = int(input())
+    
     if N % 5 == 0:
-        print(int(N / 5))
-    else :
-        five = N // 5
-        three = (N - five*5) // 3
-        while True:
-            if (N- five*5) % 3 == 0:
-                print(five + three)
-                break
-            else :
-                five -= 1
-                three = (N-five*5) // 3
-                if five < 0:
-                    print(-1)
-                    break
+        return N // 5
+    
+    max_5 = N // 5
+    
+    while max_5 >= 0:
+        remain = N - (max_5 * 5)
+        
+        if remain % 3 == 0:
+            return max_5 + (remain // 3)
+        
+        max_5 -= 1
+    
+    return -1
+
+print(solution())
