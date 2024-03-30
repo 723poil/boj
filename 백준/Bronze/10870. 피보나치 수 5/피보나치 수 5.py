@@ -1,11 +1,20 @@
-q = input()
+from sys import stdin
 
-def fibonacci (n):
-    if n==0:
-        return 0
-    elif n==1:
-        return 1
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
+input = stdin.readline
 
-print(str(fibonacci(int(q))))
+def solution():
+    
+    N = int(input())
+    
+    n_list = [0, 1]
+    
+    if N <= 1:
+        return n_list[N]
+    
+    for i in range(2, N+1):
+        n_list.append(n_list[i-2] + n_list[i-1])
+        
+    return n_list[N]
+    
+
+print(solution())
