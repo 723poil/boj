@@ -1,42 +1,55 @@
-n = list(str(input()))
+from sys import stdin
 
-numberstack = []
-operation = []
+input = stdin.readline
 
-sum = 0
-while len(n) > 0:
-    a = n.pop(0)
+def setNumber(ss: list) -> list:
+    temp_index = -1
+    index = 0
+    sss = []
+    
+    while index < len(ss):
+        if ss[index].isdigit():
+            if temp_index == -1:
+                temp_index = index
+            index += 1
+            continue
+        
+        if temp_index != -1:
+            sss.append("".join(ss[temp_index: index]))
+            temp_index = -1
+        
+        sss.append(ss[index])
+        index += 1
+        
+    last = "".join(ss[temp_index: index])
+    
+    if len(last) != 0:
+        sss.append(last)
+        
+    return sss
 
-    if a == '-' or a == '+':
-        numberstack.append(sum)
-        operation.append(a)
-        sum = 0
-    else:
-        sum = sum * 10 + int(a)        
+def findMin(sss: list) -> int:
+    temp_sum = 0
+    result = 0
+    
+    for i in range(len(sss)-1, -1, -1):
+        if sss[i].isdigit():
+            temp_sum += int(sss[i])
+            continue
+        
+        if sss[i] == '+':
+            continue
+        
+        result -= temp_sum
+        temp_sum = 0
+        
+    return result + temp_sum
 
-numberstack.append(sum)
-ssum = numberstack.pop(0)
+def solution():
+    ss = list(str(input().rstrip()))
+    
+    sss = setNumber(ss)
+    
+    return findMin(sss)
 
-i = 0
-besum = 0
-isminus = False
-while i < len(numberstack):
-
-    if isminus == False:
-        if operation[i] == '-':
-            isminus = True
-            besum += numberstack[i]
-        else:
-            ssum += numberstack[i]
-    else:
-        if operation[i] == '+':
-            besum += numberstack[i]
-        else:
-            ssum -= besum
-            besum = numberstack[i]
-
-    i += 1
-
-ssum -= besum
-
-print(ssum)
+print(solution())
