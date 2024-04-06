@@ -28,7 +28,10 @@ def solution():
             # 3. 합이 S보다 크거나 같은 경우만 남았으므로 li를 움직인다.
             result = min(ri - li + 1, result)
             sum -= sequence[li]
-            li += 1
+            li += 1    
+        elif sum < S and (ri - li + 1) >= result:
+            sum -= sequence[li]
+            li += 1  
             
     for lli in range(li, ri+1):
         if sum >= S:
