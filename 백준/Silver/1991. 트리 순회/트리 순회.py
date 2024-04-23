@@ -1,45 +1,38 @@
-import sys
+from sys import stdin
 
-input = sys.stdin.readline
+input = stdin.readline
 
-N = int(input())
+def preorder(p: str):
+    if p != '.':
+        print(p, end='')
+        preorder(tree[p][0])
+        preorder(tree[p][1])
+        
+def inorder(p: str):
+    if p != '.':
+        inorder(tree[p][0])
+        print(p, end='')
+        inorder(tree[p][1])
+        
+def postorder(p: str):
+    if p != '.':
+        postorder(tree[p][0])
+        postorder(tree[p][1])
+        print(p, end='')
 
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.leftChild = None
-        self.rightChild = None
-
-tree = [Node(i) for i in range(N)]
-
-for i in range(N):
-    a, b, c = map(str, input().split(' '))
-
-    if b != '.':
-        tree[int(ord(a)-ord('A'))].leftChild = tree[int(ord(b) - ord('A'))]
-    if c != '.\n':
-        tree[int(ord(a)-ord('A'))].rightChild = tree[int(ord(c[0]) - ord('A'))]
-
-def preorder(ptr):
-    if ptr:
-        print(chr(ptr.data + ord('A')), end='')
-        preorder(ptr.leftChild)
-        preorder(ptr.rightChild)
-
-def inorder(ptr):
-    if ptr:
-        inorder(ptr.leftChild)
-        print(chr(ptr.data + ord('A')), end='')
-        inorder(ptr.rightChild)
-
-def postorder(ptr):
-    if ptr:
-        postorder(ptr.leftChild)
-        postorder(ptr.rightChild)
-        print(chr(ptr.data + ord('A')), end='')
-
-preorder(tree[0])
-print()
-inorder(tree[0])
-print()
-postorder(tree[0])
+if __name__ == '__main__':
+    N = int(input())
+    
+    tree = dict()
+    
+    for _ in range(N):
+        p, lc, rc = map(str, input().rstrip().split())
+        
+        tree[p] = [lc, rc]
+        
+    preorder('A')
+    print()   
+    inorder('A')
+    print()        
+    postorder('A')
+    print()             
