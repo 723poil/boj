@@ -5,7 +5,7 @@ input = stdin.readline
 def check(row: int, col: int, dis: int) -> bool:
     for r in range(row, row + dis):
         for c in range(col, col + dis):
-            if r >= 10 or c >= 10 or board[r][c] == 0:
+            if board[r][c] == 0:
                 return False
             
     return True
@@ -37,6 +37,9 @@ def dfs(row: int, col: int, cnt: int):
     
     for i in range(1, 6):
         if able_count[i] <= 0:
+            continue
+        
+        if row + i > 10 or col + i > 10:
             continue
         
         if not check(row, col, i):
